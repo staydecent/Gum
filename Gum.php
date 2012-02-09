@@ -9,38 +9,65 @@
 
 namespace Gum;
 
-class InvalidRequestMethod extends Exception {}
+class InvalidRequestMethod extends \Exception {}
+class InvalidRequestRoute extends \Exception {}
 
-/**
- * Stick functions to URLs.
- */
 class Stick {
 
-    public static function map($rules)
-    {
-        $route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
+    private static $instance;
 
-        foreach ($rules as $rule => $callback) 
+    private $rules = array();
+    private $route;
+
+    public $is_matched = FALSE;
+
+    public static function delegate()
+    {
+        $instance = self::get_instance();
+
+        if ($instance->is_matched)
+        {
+            return TRUE;
+        }
+
+        foreach ($instance->rules as $rule => $callback) 
         {
             $rule = str_replace('/', '\/', $rule);
             $rule = '^' . $rule . '\/?$';
 
-            if (preg_match("/$rule/i", $route, $matches)) 
+            if (preg_match("/{$rule}/i", $instance->route, $matches)) 
             {
-                return $callback;        
+                $instance->is_matched = TRUE;
+                $callback();
             }
         }  
     }
 
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic($name, $args)
     {
         if ($name === strtolower($_SERVER['REQUEST_METHOD']))
         {
-            Self::map($rules);
+            $instance = self::get_instance();
+            $instance->route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
+            $instance->rules[$args[0]] = $args[1];
+
+            self::delegate();
         }
-        else
+    }
+
+    public static function not_found()
+    {
+        $instance = self::get_instance();
+        return ($instance->is_matched) ? FALSE : TRUE;
+    }
+
+    public static function get_instance() 
+    {
+        if ( ! isset(self::$instance)) 
         {
-            throw new InvalidRequestMethod("Error Processing Request", 1);
+            self::$instance = new Stick();
         }
+
+        return self::$instance;
     }
 }
