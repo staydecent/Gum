@@ -8,14 +8,51 @@
  */
 namespace Gum;
 
-/**
- * Singleton
- *
- * @package Gum
- */
-class Single {
+// TODO: Use this trait when you upgrade to PHP 5.4
+// trait Singleton {
     
+//     private static $instance;
+
+//     private function __construct() {}
+
+//     public function __clone() {}
+//     public function __wakeup() {}
+
+//     /**
+//      * Get the instance.
+//      *
+//      * @return Object
+//      */
+//     public static function get_instance() 
+//     {
+//         if ( ! isset(self::$instance)) 
+//         {
+//             self::$instance = new self;
+//         }
+
+//         return self::$instance;
+//     }
+// }
+
+/**
+ * Provided by Danillo César de O. Melo
+ * https://github.com/danillos/fire_event/blob/master/Event.php
+ */
+class Event {
+  
+    /**
+     * Hooks are pairs of events => functions to call.
+     *
+     * @var array
+     */
+    private $hooks = array();
+
     private static $instance;
+
+    private function __construct() {}
+
+    public function __clone() {}
+    public function __wakeup() {}
 
     /**
      * Get the instance.
@@ -26,25 +63,11 @@ class Single {
     {
         if ( ! isset(self::$instance)) 
         {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;
     }
-}
-
-/**
- * Provided by Danillo César de O. Melo
- * https://github.com/danillos/fire_event/blob/master/Event.php
- */
-class Event extends Single {
-  
-    /**
-     * Hooks are pairs of events => functions to call.
-     *
-     * @var array
-     */
-    private $hooks = array();
   
     /**
      * Add a function to an event.
@@ -88,12 +111,34 @@ class Event extends Single {
  *
  * @package Gum
  */
-class Route extends Single {
+class Route {
 
     private $rules = array(),
             $route;
 
-    public  $is_matched = FALSE;
+    public $is_matched = FALSE;
+
+    private static $instance;
+
+    private function __construct() {}
+
+    public function __clone() {}
+    public function __wakeup() {}
+
+    /**
+     * Get the instance.
+     *
+     * @return Object
+     */
+    public static function get_instance() 
+    {
+        if ( ! isset(self::$instance)) 
+        {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
+    }
 
     /**
      * Matches the current route to a rule, invoking the callback.
@@ -112,7 +157,9 @@ class Route extends Single {
             if (preg_match("/{$rule}/i", $instance->route, $matches)) 
             {
                 $instance->is_matched = TRUE;
+                Event::fire('before_callback', $callback);
                 $callback();
+                Event::fire('after_callback', $callback);
             }
         }  
     }
@@ -126,6 +173,8 @@ class Route extends Single {
      */
     public static function __callStatic($name, $args)
     {
+        $instance = self::get_instance();
+
         if ($instance->is_matched)
         {
             return TRUE;
@@ -133,7 +182,6 @@ class Route extends Single {
         
         if ($name === strtolower($_SERVER['REQUEST_METHOD']))
         {
-            $instance = self::get_instance();
             $instance->route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
             $instance->rules[$args[0]] = $args[1];
 
