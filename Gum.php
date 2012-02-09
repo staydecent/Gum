@@ -18,7 +18,7 @@ class Stick {
 
     public static function map($rules)
     {
-        $route = isset( $_GET['r'] )) ? trim( $_GET['r'], '/\\' ) : '/';
+        $route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
 
         foreach ($rules as $rule => $callback) 
         {
