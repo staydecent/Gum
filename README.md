@@ -1,5 +1,5 @@
-Gum is a base for rapid prototyping with PHP, providing an HTTP Router and Events system.
-Paired with a few other PHP Libraries, Gum let's you *prototype your application, rapidly!*. Whoa.
+### Gum is a base for rapid prototyping with PHP, providing an HTTP Router and Events system.
+### Paired with a few other PHP Libraries, Gum let's you *prototype your application, rapidly!*. Whoa.
 
 # Ignoring Best Practices
 
