@@ -12,23 +12,25 @@ What? Gum requires a version of PHP not yet ready for production? Does this mean
 
 # Hello&hellip;Universe?
     
-    <?php
-    require 'path_to/Gum.php';
+```php
+<?php
+require 'path_to/Gum.php';
 
-    Gum\Route::get('/', function() {
-        echo "Home";
-    });
+Gum\Route::get('/', function() {
+    echo "Home";
+});
 
-    Gum\Route::post('thing', function() {
-        // if '/thing' is accessed through any other request method
-        // other than 'post', this callback will never be called.
-        echo "Thing";
-    });
+Gum\Route::post('thing', function() {
+    // if '/thing' is accessed through any other request method
+    // other than 'post', this callback will never be called.
+    echo "Thing";
+});
 
-    // handle 404
-    if (Gum\Route::not_found())
-    {
-        header('HTTP/1.0 404 Not Found');
-        echo '404 Not Found';
-        exit;
-    }
+// handle 404
+if (Gum\Route::not_found())
+{
+    header('HTTP/1.0 404 Not Found');
+    echo '404 Not Found';
+    exit;
+}
+```
