@@ -8,45 +8,11 @@
  */
 namespace Gum;
 
-// TODO: Use this trait when you upgrade to PHP 5.4
-// trait Singleton {
-    
-//     private static $instance;
-
-//     private function __construct() {}
-
-//     public function __clone() {}
-//     public function __wakeup() {}
-
-//     /**
-//      * Get the instance.
-//      *
-//      * @return Object
-//      */
-//     public static function get_instance() 
-//     {
-//         if ( ! isset(self::$instance)) 
-//         {
-//             self::$instance = new self;
-//         }
-
-//         return self::$instance;
-//     }
-// }
-
 /**
- * Provided by Danillo César de O. Melo
- * https://github.com/danillos/fire_event/blob/master/Event.php
+ * All (both) Gum classes use the Singleton trait.
  */
-class Event {
-  
-    /**
-     * Hooks are pairs of events => functions to call.
-     *
-     * @var array
-     */
-    private $hooks = array();
-
+trait Singleton {
+    
     private static $instance;
 
     private function __construct() {}
@@ -68,6 +34,22 @@ class Event {
 
         return self::$instance;
     }
+}
+
+/**
+ * Provided by Danillo César de O. Melo
+ * https://github.com/danillos/fire_event/blob/master/Event.php
+ */
+class Event {
+
+    use Singleton;
+  
+    /**
+     * Hooks are pairs of events => functions to call.
+     *
+     * @var array
+     */
+    private $hooks = array();
   
     /**
      * Add a function to an event.
@@ -113,32 +95,12 @@ class Event {
  */
 class Route {
 
+    use Singleton;
+
     private $rules = array(),
             $route;
 
     public $is_matched = FALSE;
-
-    private static $instance;
-
-    private function __construct() {}
-
-    public function __clone() {}
-    public function __wakeup() {}
-
-    /**
-     * Get the instance.
-     *
-     * @return Object
-     */
-    public static function get_instance() 
-    {
-        if ( ! isset(self::$instance)) 
-        {
-            self::$instance = new self;
-        }
-
-        return self::$instance;
-    }
 
     /**
      * Matches the current route to a rule, invoking the callback.
@@ -169,7 +131,7 @@ class Route {
      *
      * @param  string $name name of the request method
      * @param  array  $args
-     * @return void
+     * @return bool
      */
     public static function __callStatic($name, $args)
     {
@@ -177,7 +139,7 @@ class Route {
 
         if ($instance->is_matched)
         {
-            return TRUE;
+            return FALSE;
         }
         
         if ($name === strtolower($_SERVER['REQUEST_METHOD']))
@@ -186,6 +148,8 @@ class Route {
             $instance->rules[$args[0]] = $args[1];
 
             self::delegate();
+
+            return TRUE;
         }
     }
 

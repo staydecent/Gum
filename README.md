@@ -11,7 +11,8 @@ This ain't about purity, or convention or anything other than rapid-*ness*. So, 
 What? Gum requires a version of PHP not yet ready for production? Does this mean Gum is *not ready for production?!* You said it, sister!
 
 # Hello&hellip;Universe?
-
+    
+    <?php
     require 'path_to/Gum.php';
 
     Gum\Route::get('/', function() {
