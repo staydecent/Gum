@@ -8,7 +8,7 @@ This ain't about purity, or convention or anything other than rapid-*ness*. So, 
 
 ## Requires PHP 5.4 or higher
 
-What? Gum requires a version of PHP not yet ready for production? Does this mean Gum is *not ready for production?!* You said it, sister!
+PHP 5.4 is now production ready. Does this mean Gum is *ready for production?!* **No.**
 
 # Hello&hellip;Universe?
     
@@ -33,4 +33,9 @@ if (Gum\Route::not_found())
     echo '404 Not Found';
     exit;
 }
+?>
 ```
+
+## Where's the Gumblog UI?
+
+If you're looking for the Gumblog UI, see [this repo](https://github.com/staydecent/Gumblog-UI).
