@@ -15,19 +15,32 @@ PHP 5.4 is now production ready. Does this mean Gum is *ready for production?!* 
 ```php
 <?php
 require 'path_to/Gum.php';
+use Gum\Route as Route;
 
-Gum\Route::get('/', function() {
+// The actual URL does not need a trailing slash
+Route::get('/', function() {
     echo "Home";
 });
 
-Gum\Route::post('thing', function() {
-    // if '/thing' is accessed through any other request method
-    // other than 'post', this callback will never be called.
+// Named route parameters
+Route::get('archive/:year/:month/:day', function($year = NULL, $month = NULL, $day = NULL) {
+    var_dump($year, $month, $day);
+});
+
+// Regex routes, params are passed in an array
+Route::get('post/([\d]+)/([a-zA-Z0-9_]+)?', function($args) {
+    // if just 'post/' is accessed, $args will be empty array
+    var_dump($args);
+});
+
+// if '/thing' is accessed through any other request method
+// other than 'post', this callback will never be called.
+Route::post('thing', function() {
     echo "Thing";
 });
 
 // handle 404
-if (Gum\Route::not_found())
+if (Route::not_found())
 {
     header('HTTP/1.0 404 Not Found');
     echo '404 Not Found';
