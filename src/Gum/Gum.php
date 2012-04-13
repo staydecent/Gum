@@ -6,7 +6,7 @@
  * By Adrian Unger <http://staydecent.ca>
  * Public Domain or something.
  */
-namespace Gum;
+namespace staydecent\Gum;
 
 /**
  * All (both) Gum classes use the Singleton trait.

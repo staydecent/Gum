@@ -1,0 +1,23 @@
+{
+    "name": "Gum/Gum",
+    "type": "library",
+    "description": "Map URLs to callbacks.",
+    "keywords": ["map","routing","router","microframework"],
+    "homepage": "https://github.com/staydecent/Gum",
+    "license": "Public Domain",
+    "authors": [
+        {
+            "name": "Adrian Unger",
+            "email": "dev@staydecent.ca",
+            "homepage": "//staydecent.ca"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Gum": "src"
+        }
+    }
+}
