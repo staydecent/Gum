@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 /**
  * Gum is fun!
- * 
+ *
  * By Adrian Unger <http://staydecent.ca>
  * Public Domain or something.
  */
@@ -31,7 +31,7 @@ class Route {
     {
         $instance = self::get_instance();
 
-        foreach ($instance->rules as $rule => $callback) 
+        foreach ($instance->rules as $rule => $callback)
         {
             $param_keys = [];
 
@@ -42,7 +42,7 @@ class Route {
 
                 $named_params = explode(':', $rule);
                 array_shift($named_params);
-                
+
                 foreach ($named_params as $param)
                 {
                     // saved named param
@@ -56,7 +56,7 @@ class Route {
             $rule = str_replace('/', '\/?', $rule); // All slashes are optional
             $rule = '^' . $rule . '\/?$';
 
-            if (preg_match("/{$rule}/i", $instance->route, $matches)) 
+            if (preg_match("/{$rule}/i", $instance->route, $matches))
             {
                 $instance->is_matched = TRUE;
                 unset($matches[0]);
@@ -80,7 +80,7 @@ class Route {
 
                 Event::fire('after_callback', $callback);
             }
-        }  
+        }
     }
 
     /**
@@ -98,8 +98,8 @@ class Route {
         {
             return FALSE;
         }
-        
-        if ($name === strtolower($_SERVER['REQUEST_METHOD']))
+
+        if ($name === 'request' || $name === strtolower($_SERVER['REQUEST_METHOD']))
         {
             $instance->route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
             $instance->rules[$args[0]] = $args[1];
