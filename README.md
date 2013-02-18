@@ -11,7 +11,7 @@ This ain't about purity, or convention or anything other than rapid-*ness*. So, 
 PHP 5.4 is now production ready. Does this mean Gum is *ready for production?!* **No.**
 
 # Hello&hellip;Universe?
-    
+
 ```php
 <?php
 require 'path_to/Gum.php';
@@ -37,6 +37,13 @@ Route::get('post/([\d]+)/([a-zA-Z0-9_]+)?', function($args) {
 // other than 'post', this callback will never be called.
 Route::post('thing', function() {
     echo "Thing";
+});
+
+// If you need a route to be accessible to both GET and POST
+// requests, use `request`. The callback will be fired in
+// both cases.
+Route::request('foobar', function() {
+    echo "Foobar!";
 });
 
 // handle 404
