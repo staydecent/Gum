@@ -1,14 +1,20 @@
 <?php 
 
-// so safe
-$q = $_SERVER['QUERY_STRING'];
-$s = file_get_contents($q);
+// php -S localhost:8001 index.php
 
-function filter_html_tokens($a)
+require '../../src/Gum/Singleton.php';
+require '../../src/Gum/Event.php';
+require '../../src/Gum/Route.php';
+
+use Gum\Route as Route;
+
+Route::get('thing', function() {
+    echo "Thing";
+});
+
+if (Route::not_found())
 {
-    return (is_array($a) && $a[0] == T_INLINE_HTML) ? $a[1] : '';
+    header('HTTP/1.0 404 Not Found');
+    echo '404 Not Found';
+    exit;
 }
-
-$s2 = implode('', array_map('filter_html_tokens', token_get_all($s)));
-
-echo $s2;
