@@ -56,6 +56,6 @@ if (Route::not_found())
 ?>
 ```
 
-## Where's the Gumblog UI?
+## Docs/Guides
 
-If you're looking for the Gumblog UI, see [this repo](https://github.com/staydecent/Gumblog-UI).
+* [Using Gum with Composer](https://github.com/staydecent/Gum/wiki/Using-Gum-with-Composer)
