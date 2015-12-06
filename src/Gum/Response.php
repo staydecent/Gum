@@ -19,4 +19,13 @@ class Response {
     header('Content-Type: application/json');
     return json_encode($data);
   }
+
+  public static function render($file, $vars = array()) {
+    extract($vars);
+    ob_start();
+    include $file;
+    $out = ob_get_contents();
+    ob_end_clean();
+    return $out; 
+  }
 }
