@@ -12,26 +12,24 @@ namespace Gum;
  * All (both) Gum classes use the Singleton trait.
  */
 trait Singleton {
-    
-    private static $instance;
 
-    private function __construct() {}
+  private static $instance;
 
-    public function __clone() {}
-    public function __wakeup() {}
+  private function __construct() {}
 
-    /**
-     * Get the instance.
-     *
-     * @return Object
-     */
-    public static function get_instance() 
-    {
-        if ( ! isset(self::$instance)) 
-        {
-            self::$instance = new self;
-        }
+  public function __clone() {}
+  public function __wakeup() {}
 
-        return self::$instance;
+  /**
+   * Get the instance.
+   *
+   * @return Object
+   */
+  public static function get_instance() {
+    if (! isset(self::$instance)) {
+      self::$instance = new self;
     }
+
+    return self::$instance;
+  }
 }
