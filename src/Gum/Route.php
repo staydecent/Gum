@@ -49,8 +49,13 @@ class Route {
         }
       }
 
-      $rule = str_replace('/', '\/?', $rule); // All slashes are optional
-      $rule = '^' . $rule . '\/?$';
+      // Escape slashes, and ensure optional trailing slash
+      $rule = str_replace('/', '\/', $rule);
+      if (substr($rule, -1) === '/') {
+        $rule = '^' . $rule . '?$';
+      } else {
+        $rule = '^' . $rule . '\/?$';
+      }
 
       if (preg_match("/{$rule}/i", $instance->route, $matches)) {
         $instance->is_matched = TRUE;
