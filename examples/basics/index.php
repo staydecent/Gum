@@ -9,12 +9,11 @@ require '../../src/Gum/Route.php';
 use Gum\Route as Route;
 
 Route::get('thing', function() {
-    echo "Thing";
+  echo "Thing";
 });
 
-if (Route::not_found())
-{
-    header('HTTP/1.0 404 Not Found');
-    echo '404 Not Found';
-    exit;
+if (Route::not_found()) {
+  header('HTTP/1.0 404 Not Found');
+  echo '404 Not Found';
+  exit;
 }

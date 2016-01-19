@@ -96,7 +96,15 @@ class Route {
         $_GET['r'] = $_SERVER["REQUEST_URI"];
       }
 
-      $instance->route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
+      $route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
+
+      // remove query params from our $route string
+      if (strstr($route, '?') !== FALSE) {
+        $parts = explode('?', $route);
+        $route = $parts[0];
+      }
+
+      $instance->route = $route;
       $instance->rules[$args[0]] = $args[1];
 
       self::delegate();
