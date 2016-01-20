@@ -34,16 +34,14 @@ class Route {
       $param_keys = [];
 
       // Handle named params
-      if (stristr($rule, ':')) {
-        $re_pat = '([a-zA-Z0-9_\-\.\!\~\*\\\'\(\)\:\@\&\=\$\+,%]+)?/';
+      if (stristr($rule, ':') !== FALSE) {
+        $re_pat = '([a-zA-Z0-9_\-\.\!\~\*\\\'\(\)\:\@\&\=\$\+,%]+)?';
 
-        $named_params = explode(':', $rule);
-        array_shift($named_params);
+        if (preg_match_all("/:{$re_pat}/i", $rule, $matches)) {
+          $named_params = $matches[1];
+        }
 
         foreach ($named_params as $param) {
-          // saved named param
-          $param_keys[] = $param;
-
           // replace name in rule with regex
           $rule = str_replace(':'.$param, $re_pat, $rule);
         }
@@ -64,10 +62,10 @@ class Route {
         Event::fire('before_callback', $callback);
 
         // Pass args as individual params
-        if ( ! empty($param_keys) && is_array($matches)) {
+        if ( ! empty($named_params) && is_array($matches)) {
           // ensure equal number of elements
-          $param_keys = array_slice($param_keys, 0, count($matches));
-          $params = array_combine($param_keys, $matches);
+          $named_params = array_slice($named_params, 0, count($matches));
+          $params = array_combine($named_params, $matches);
 
           call_user_func_array($callback, array_values($params));
         }
@@ -101,7 +99,7 @@ class Route {
         $_GET['r'] = $_SERVER["REQUEST_URI"];
       }
 
-      $route = isset($_GET['r']) ? trim($_GET['r'], '/\\') : '/';
+      $route = isset($_GET['r']) ? trim($_GET['r']) : '/';
 
       // remove query params from our $route string
       if (strstr($route, '?') !== FALSE) {
