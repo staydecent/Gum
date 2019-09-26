@@ -1,35 +1,42 @@
-<?php 
-
+<?php
 /**
- * Gum is fun!
- * 
- * By Adrian Unger <http://staydecent.ca>
- * Public Domain or something.
+ * Singleton
+ *
+ * @category Class
+ * @package  Gum
+ * @author   Adrian Unger <dev@staydecent.ca>
+ * @license  http://opensource.org/licenses/mit-license.php MIT License
+ * @version  0.3.0
+ * @link     http://staydecent.ca
  */
+
 namespace Gum;
 
 /**
- * All (both) Gum classes use the Singleton trait.
+ * Singleton
+ *
+ * @category Singleton
+ * @package  Gum
+ * @author   Adrian Unger <dev@staydecent.ca>
+ * @license  http://opensource.org/licenses/mit-license.php MIT License
+ * @version  0.3.0
+ * @link     http://staydecent.ca
  */
-trait Singleton {
+trait Singleton
+{
+    private static $_instance;
 
-  private static $instance;
+    /**
+     * Get the instance.
+     *
+     * @return Object
+     */
+    public static function getInstance()
+    {
+        if (! isset(self::$instance)) {
+            self::$instance = new self;
+        }
 
-  private function __construct() {}
-
-  public function __clone() {}
-  public function __wakeup() {}
-
-  /**
-   * Get the instance.
-   *
-   * @return Object
-   */
-  public static function get_instance() {
-    if (! isset(self::$instance)) {
-      self::$instance = new self;
+        return self::$instance;
     }
-
-    return self::$instance;
-  }
 }
