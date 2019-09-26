@@ -45,8 +45,8 @@ class Event
      */
     public static function hook($event_name, $fn)
     {
-        $instance = self::get_instance();
-        $instance->hooks[$event_name][] = $fn;
+        $instance = self::getInstance();
+        $instance->_hooks[$event_name][] = $fn;
     }
 
     /**
@@ -59,10 +59,10 @@ class Event
      */
     public static function fire($event_name, $params = null)
     {
-        $instance = self::get_instance();
+        $instance = self::getInstance();
 
-        if (array_key_exists($event_name, $instance->hooks)) {
-            foreach ($instance->hooks[$event_name] as $fn) {
+        if (array_key_exists($event_name, $instance->_hooks)) {
+            foreach ($instance->_hooks[$event_name] as $fn) {
                 if (is_array($fn) || is_string($fn)) {
                     call_user_func_array($fn, array(&$params));
                 }

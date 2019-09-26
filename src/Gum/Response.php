@@ -65,13 +65,13 @@ class Response
      */
     public static function render($file, $vars = array())
     {
-        $file = 'templates/' . $file . '.html';
+        $file = $file . '.html';
         $vars['layout'] = function ($name) {
             $isPJAX = !is_null($_SERVER['HTTP_X_PJAX']);
             if (!$isPJAX) {
                 include 'templates/layout/' . $name . '.html';
             }
         };
-        return Res::renderTemplate($file, $vars);
+        return Response::renderTemplate($file, $vars);
     }
 }

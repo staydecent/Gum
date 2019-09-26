@@ -38,9 +38,9 @@ class Route
      */
     public static function delegate()
     {
-        $instance = self::get_instance();
+        $instance = self::getInstance();
 
-        foreach ($instance->rules as $rule => $callback) {
+        foreach ($instance->_rules as $rule => $callback) {
             $param_keys = [];
 
             // Handle named params
@@ -65,12 +65,12 @@ class Route
                 $rule = '^' . $rule . '\/?$';
             }
 
-            if (preg_match("/{$rule}/i", $instance->route, $matches)) {
+            if (preg_match("/{$rule}/i", $instance->_route, $matches)) {
                 $instance->is_matched = true;
 
                 unset($matches[0]);
 
-                Event::fire('before_callback', $callback);
+                Event::fire('before_callback', ['route' => $instance->_route, 'matches' => $matches]);
 
                 // Pass args as individual params or as an array
                 if (! empty($named_params) && is_array($matches)) {
@@ -98,7 +98,7 @@ class Route
      */
     public static function __callStatic($name, $args)
     {
-        $instance = self::get_instance();
+        $instance = self::getInstance();
 
         if ($instance->is_matched) {
             return false;
@@ -118,8 +118,8 @@ class Route
                 $route = $parts[0];
             }
 
-            $instance->route = $route;
-            $instance->rules[$args[0]] = $args[1];
+            $instance->_route = $route;
+            $instance->_rules[$args[0]] = $args[1];
 
             self::delegate();
 
@@ -134,7 +134,7 @@ class Route
      */
     public static function notFound()
     {
-        $instance = self::get_instance();
+        $instance = self::getInstance();
         return ($instance->is_matched) ? false : true;
     }
 }
