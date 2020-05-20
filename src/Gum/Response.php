@@ -65,7 +65,7 @@ class Response
      */
     public static function render($file, $vars = array())
     {
-        $file = $file . '.html';
+        $file = 'templates/' . $file . '.html';
         $vars['layout'] = function ($name) {
             $isPJAX = !is_null($_SERVER['HTTP_X_PJAX']);
             if (!$isPJAX) {
