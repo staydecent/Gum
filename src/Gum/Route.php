@@ -107,7 +107,7 @@ class Route
         if ($name === 'request' || $name === strtolower($_SERVER['REQUEST_METHOD'])) {
             // support for built-in php web server
             if (php_sapi_name() === 'cli-server') {
-                $_GET['r'] = $_SERVER["REQUEST_URI"];
+		$_GET['r'] = ltrim($_SERVER["REQUEST_URI"], "/");
             }
 
             $route = isset($_GET['r']) ? trim($_GET['r']) : '/';
