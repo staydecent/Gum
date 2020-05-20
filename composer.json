@@ -1,10 +1,10 @@
 {
-    "name": "Gum/Gum",
+    "name": "gum/gum",
     "type": "library",
     "description": "Map URLs to callbacks.",
     "keywords": ["map","routing","router","microframework"],
     "homepage": "https://github.com/staydecent/Gum",
-    "license": "Public Domain",
+    "license": "MIT",
     "authors": [
         {
             "name": "Adrian Unger",
